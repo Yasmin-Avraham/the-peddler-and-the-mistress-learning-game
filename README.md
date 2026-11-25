@@ -4,6 +4,8 @@
 
 Designed for 11th-grade Special Education students preparing for the Israeli Literature Bagrut exam, the game is built for full-screen classroom projection with teacher-led facilitation.
 
+Link: https://yasmin-avraham.github.io/the-peddler-and-the-mistress-learning-game/
+
 ---
 
 ## Features
