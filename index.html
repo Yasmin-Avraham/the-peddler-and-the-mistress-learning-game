@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>הבריחה מהיער של הלני – האדונית והרוכל | ש"י עגנון</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;900&family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- שכבת אווירה של יער לילה וכוכבים -->
+  <div class="forest-atmosphere" aria-hidden="true">
+    <div class="stars-layer"></div>
+    <div class="moon-glow"></div>
+    <div class="fireflies" id="fireflies"></div>
+  </div>
+
+  <!-- מעטפת האפליקציה הראשית (מותאמת למסך הקרנה מלא) -->
+  <div class="app-shell">
+    <!-- פס כותרת עליון -->
+    <header class="top-bar">
+      <div class="brand-area">
+        <div class="brand-lantern" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M20 4V9" stroke="#f7d47c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M13 11H27L25 29H15L13 11Z" fill="rgba(247,212,124,0.22)" stroke="#f7d47c" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M11 11H29" stroke="#f7d47c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M13 29H27" stroke="#f7d47c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M15 33H25" stroke="#d4a243" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M20 15C20 15 23 18.2 23 20.8C23 22.6 21.7 24 20 24C18.3 24 17 22.6 17 20.8C17 18.2 20 15 20 15Z" fill="#ffd970"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="game-title">הבריחה מהיער של הלני</h1>
+          <p class="game-subtitle">"האדונית והרוכל" • ש"י עגנון</p>
+        </div>
+      </div>
+
+      <!-- באנר תור פעיל בולט -->
+      <button type="button" class="turn-banner" id="turnBanner" title="לחצו כדי להחליף תור ידנית">
+        <span class="turn-dot" id="turnDot"></span>
+        <span class="turn-label">תור עכשיו:</span>
+        <strong class="turn-team-name" id="turnTeamName">קבוצה א'</strong>
+        <span class="turn-switch-hint">⇄ החלף</span>
+      </button>
+
+      <!-- כפתורי ניהול למורה -->
+      <div class="top-actions">
+        <div class="bank-pill" id="bankCounter" title="שאלות פנויות במאגר">
+          <span class="bank-pill-icon">📜</span>
+          <span>שאלות: <strong id="remainingTotal">15</strong>/15</span>
+        </div>
+        <button type="button" class="icon-btn" id="soundToggleBtn" aria-label="הפעלה או השתקת צלילים" title="צלילים">
+          <span id="soundIcon">🔊</span>
+        </button>
+        <button type="button" class="icon-btn text-btn" id="teacherToolsBtn" title="כלי ניהול למורה">
+          <span>⚙️</span>
+          <span>ניהול מורה</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- מפת המסלול האינטראקטיבית ביער -->
+    <main class="map-stage" aria-label="מפת המסלול ביער של הלני">
+      <div class="map-frame" id="mapFrame">
+        <!-- שכבת ציור יער ומסלול SVG -->
+        <svg class="forest-svg" id="forestSvg" viewBox="0 0 1200 470" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#071221" />
+              <stop offset="55%" stop-color="#0b1f29" />
+              <stop offset="100%" stop-color="#0b241d" />
+            </linearGradient>
+            <radialGradient id="moonHalo" cx="14%" cy="18%" r="28%">
+              <stop offset="0%" stop-color="rgba(255, 226, 145, 0.34)" />
+              <stop offset="45%" stop-color="rgba(230, 184, 92, 0.10)" />
+              <stop offset="100%" stop-color="rgba(230, 184, 92, 0)" />
+            </radialGradient>
+            <radialGradient id="escapeLight" cx="10%" cy="48%" r="22%">
+              <stop offset="0%" stop-color="rgba(255, 217, 112, 0.30)" />
+              <stop offset="100%" stop-color="rgba(255, 217, 112, 0)" />
+            </radialGradient>
+            <linearGradient id="trailGold" x1="100%" y1="0%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#a87d2e" />
+              <stop offset="50%" stop-color="#f2c96b" />
+              <stop offset="100%" stop-color="#fff0a6" />
+            </linearGradient>
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <!-- רקע יער ושמי לילה -->
+          <rect x="0" y="0" width="1200" height="470" fill="url(#skyGrad)" />
+          <rect x="0" y="0" width="1200" height="470" fill="url(#moonHalo)" />
+          <rect x="0" y="0" width="1200" height="470" fill="url(#escapeLight)" />
+
+          <!-- ירח מוזהב מעל היער -->
+          <circle cx="155" cy="72" r="30" fill="#fce49c" opacity="0.92" />
+          <circle cx="169" cy="64" r="25" fill="#091826" />
+
+          <!-- צלליות עצי אורן רחוקים -->
+          <g fill="#071919" opacity="0.72">
+            <polygon points="40,360 72,185 104,360" />
+            <polygon points="88,360 128,155 168,360" />
+            <polygon points="195,360 228,195 260,360" />
+            <polygon points="275,360 322,135 370,360" />
+            <polygon points="390,360 432,175 474,360" />
+            <polygon points="510,360 555,140 600,360" />
+            <polygon points="625,360 668,180 710,360" />
+            <polygon points="735,360 785,130 835,360" />
+            <polygon points="860,360 902,175 944,360" />
+            <polygon points="975,360 1025,145 1075,360" />
+            <polygon points="1090,360 1135,170 1180,360" />
+          </g>
+
+          <!-- צלליות גבעות יער -->
+          <path d="M0,335 Q220,285 450,330 T920,315 T1200,340 L1200,470 L0,470 Z" fill="#091f1a" opacity="0.88" />
+          <path d="M0,385 Q300,340 620,385 T1200,370 L1200,470 L0,470 Z" fill="#061714" />
+
+          <!-- בית האדונית בצללית מרוחקת מימין -->
+          <g transform="translate(1065, 118)" opacity="0.45">
+            <polygon points="45,0 0,34 90,34" fill="#050d17" stroke="#c89d47" stroke-width="1.2" />
+            <rect x="10" y="34" width="70" height="52" fill="#050d17" stroke="#c89d47" stroke-width="1.2" />
+            <rect x="24" y="48" width="14" height="16" fill="#f7d47c" opacity="0.85" />
+            <rect x="52" y="48" width="14" height="16" fill="#f7d47c" opacity="0.65" />
+            <rect x="65" y="6" width="9" height="20" fill="#050d17" />
+          </g>
+
+          <!-- שביל היער המוזהב (מימין לשמאל: תחנה 1 -> תחנה 5) -->
+          <path id="trailShadow" d="" fill="none" stroke="rgba(4, 10, 14, 0.75)" stroke-width="26" stroke-linecap="round" />
+          <path id="trailBase" d="" fill="none" stroke="rgba(230, 184, 92, 0.25)" stroke-width="12" stroke-linecap="round" />
+          <path id="trailDash" d="" fill="none" stroke="url(#trailGold)" stroke-width="5" stroke-dasharray="12 10" stroke-linecap="round" filter="url(#softGlow)" />
+        </svg>
+
+        <!-- שכבת אבני דרך (Stepping Stones) -->
+        <div class="waypoints-layer" id="waypointsLayer"></div>
+
+        <!-- שכבת 5 התחנות -->
+        <div class="stations-layer" id="stationsLayer"></div>
+
+        <!-- שכבת סמני הקבוצות -->
+        <div class="tokens-layer" id="tokensLayer">
+          <div class="team-token token-a" id="tokenA" aria-label="סמן קבוצה א'">
+            <div class="token-pulse"></div>
+            <div class="token-body">
+              <span class="token-letter">א'</span>
+            </div>
+            <div class="token-tag" id="tokenTagA">קבוצה א'</div>
+          </div>
+
+          <div class="team-token token-b" id="tokenB" aria-label="סמן קבוצה ב'">
+            <div class="token-pulse"></div>
+            <div class="token-body">
+              <span class="token-letter">ב'</span>
+            </div>
+            <div class="token-tag" id="tokenTagB">קבוצה ב'</div>
+          </div>
+        </div>
+
+        <!-- תצוגת פופאפ קטנה של "+X צעדים!" בעת התקדמות -->
+        <div class="step-toast" id="stepToast" aria-live="polite"></div>
+
+        <!-- סרגל תיאור תחנה (מוצג בעת לחיצה על תחנה) -->
+        <div class="station-info-bar" id="stationInfoBar" aria-live="polite">
+          <span class="station-info-badge" id="stationInfoBadge">תחנה 1</span>
+          <strong id="stationInfoTitle">הסערה ביער</strong>
+          <span class="station-info-sep">•</span>
+          <span id="stationInfoDesc">יוסף הרוכל מגיע לבית הבודד ביער בליל סערה.</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- לוח שליטה תחתון למורה: 2 קבוצות + 3 כפתורי רמות קושי -->
+    <section class="control-dock" aria-label="לוח שליטה למורה">
+      <!-- כרטיס קבוצה א' -->
+      <div class="team-card team-card-a active" id="teamCardA" role="button" tabindex="0" title="לחצו כדי להעביר את התור לקבוצה א'">
+        <div class="team-card-header">
+          <div class="team-avatar avatar-a">א'</div>
+          <div class="team-meta">
+            <h2 class="team-name" id="nameTeamA">קבוצה א'</h2>
+            <span class="team-turn-pill" id="pillTeamA">תורם עכשיו!</span>
+          </div>
+          <div class="team-step-badge" id="stepBadgeA">0 / 12</div>
+        </div>
+        <div class="team-station-label" id="stationLabelA">תחנה 1: הסערה ביער</div>
+        <div class="progress-track">
+          <div class="progress-fill fill-a" id="progressA" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- 3 כפתורי רמות קושי צבעוניים ובולטים -->
+      <div class="difficulty-panel">
+        <div class="difficulty-heading">בחירת רמת שאלה לתלמיד שעונה:</div>
+        <div class="difficulty-buttons">
+          <button type="button" class="diff-btn diff-green" data-level="green" id="btnGreen">
+            <span class="diff-top">
+              <span class="diff-steps">+1 צעד</span>
+              <span class="diff-count" id="countGreen">5 שאלות</span>
+            </span>
+            <span class="diff-title">בסיס – שליפה מהדף</span>
+            <span class="diff-sub">שאלה ישירה מהסיפור ומדף הסיכום</span>
+          </button>
+
+          <button type="button" class="diff-btn diff-yellow" data-level="yellow" id="btnYellow">
+            <span class="diff-top">
+              <span class="diff-steps">+2 צעדים</span>
+              <span class="diff-count" id="countYellow">5 שאלות</span>
+            </span>
+            <span class="diff-title">ביניים – הבנה ומוטיבים</span>
+            <span class="diff-sub">קשרים, סמלים, ח.ז.ר ואלגוריה</span>
+          </button>
+
+          <button type="button" class="diff-btn diff-red" data-level="red" id="btnRed">
+            <span class="diff-top">
+              <span class="diff-steps">+3 צעדים</span>
+              <span class="diff-count" id="countRed">5 שאלות</span>
+            </span>
+            <span class="diff-title">אתגר בגרות – ניסוח תשובה</span>
+            <span class="diff-sub">דוגמה מהסיפור + הסבר משמעות</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- כרטיס קבוצה ב' -->
+      <div class="team-card team-card-b" id="teamCardB" role="button" tabindex="0" title="לחצו כדי להעביר את התור לקבוצה ב'">
+        <div class="team-card-header">
+          <div class="team-avatar avatar-b">ב'</div>
+          <div class="team-meta">
+            <h2 class="team-name" id="nameTeamB">קבוצה ב'</h2>
+            <span class="team-turn-pill" id="pillTeamB">ממתינים לתור</span>
+          </div>
+          <div class="team-step-badge" id="stepBadgeB">0 / 12</div>
+        </div>
+        <div class="team-station-label" id="stationLabelB">תחנה 1: הסערה ביער</div>
+        <div class="progress-track">
+          <div class="progress-fill fill-b" id="progressB" style="width: 0%"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- כרטיסיית השאלה הגדולה במרכז המסך                                       -->
+  <!-- ====================================================================== -->
+  <div class="modal-backdrop" id="questionModal" hidden role="dialog" aria-modal="true" aria-labelledby="qText">
+    <div class="question-card" id="questionCard">
+      <div class="q-accent-bar" id="qAccentBar"></div>
+
+      <div class="q-header">
+        <div class="q-badges">
+          <span class="q-team-badge" id="qTeamBadge">עונה עכשיו: קבוצה א'</span>
+          <span class="q-level-badge" id="qLevelBadge">בסיס – שליפה מהדף • +1 צעד</span>
+          <span class="q-topic-badge" id="qTopicBadge">אקספוזיציה</span>
+        </div>
+        <button type="button" class="q-close-btn" id="qCloseBtn" title="ביטול והחזרת השאלה למאגר (Esc)" aria-label="סגור שאלה">✕</button>
+      </div>
+
+      <div class="q-body">
+        <p class="q-text" id="qText"></p>
+
+        <!-- כפתורי רמז ותשובה למורה -->
+        <div class="q-assist-bar">
+          <button type="button" class="assist-btn hint-btn" id="hintToggleBtn">
+            <span class="assist-icon">💡</span>
+            <span>רמז (איפה לחפש בדף הסיכום)</span>
+          </button>
+          <button type="button" class="assist-btn answer-btn" id="answerToggleBtn">
+            <span class="assist-icon">📖</span>
+            <span id="answerToggleText">הצג תשובה מלאה למורה</span>
+          </button>
+        </div>
+
+        <!-- תיבת הרמז -->
+        <div class="reveal-box hint-box" id="hintBox" hidden>
+          <div class="reveal-title">💡 רמז – היכן לחפש בדף הסיכום:</div>
+          <p class="reveal-content" id="hintContent"></p>
+        </div>
+
+        <!-- תיבת התשובה המלאה למורה -->
+        <div class="reveal-box answer-box" id="answerBox" hidden>
+          <div class="reveal-title">📖 תשובה מלאה למורה:</div>
+          <ul class="answer-list" id="answerContent"></ul>
+        </div>
+      </div>
+
+      <div class="q-footer">
+        <button type="button" class="action-btn btn-correct" id="correctAdvanceBtn">
+          <span>✅</span>
+          <span id="correctAdvanceText">ענו נכון – קדם קבוצה (+1 צעד)</span>
+        </button>
+        <button type="button" class="action-btn btn-skip" id="continueNoAdvanceBtn">
+          <span>➡️</span>
+          <span>המשך (ללא קידום)</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- חלון ניהול למורה (הגדרות, שמות, התאמה ידנית, בחירת שאלה)               -->
+  <!-- ====================================================================== -->
+  <div class="modal-backdrop" id="teacherModal" hidden role="dialog" aria-modal="true" aria-labelledby="teacherModalTitle">
+    <div class="teacher-card">
+      <div class="teacher-header">
+        <h2 id="teacherModalTitle">⚙️ כלי ניהול ושליטה למורה</h2>
+        <button type="button" class="q-close-btn" id="teacherCloseBtn" aria-label="סגור ניהול מורה">✕</button>
+      </div>
+
+      <div class="teacher-body">
+        <!-- שמות קבוצות והזזה ידנית -->
+        <div class="teacher-section">
+          <h3>שמות הקבוצות ותיקון צעדים ידני</h3>
+          <div class="teacher-teams-grid">
+            <div class="teacher-team-row">
+              <span class="mini-dot dot-a"></span>
+              <input type="text" id="inputNameA" value="קבוצה א'" maxlength="20" aria-label="שם קבוצה א'" />
+              <div class="manual-step-controls">
+                <button type="button" class="mini-btn" id="decA" title="הורד צעד">−1</button>
+                <span class="manual-pos" id="manualPosA">0</span>
+                <button type="button" class="mini-btn" id="incA" title="הוסף צעד">+1</button>
+              </div>
+            </div>
+            <div class="teacher-team-row">
+              <span class="mini-dot dot-b"></span>
+              <input type="text" id="inputNameB" value="קבוצה ב'" maxlength="20" aria-label="שם קבוצה ב'" />
+              <div class="manual-step-controls">
+                <button type="button" class="mini-btn" id="decB" title="הורד צעד">−1</button>
+                <span class="manual-pos" id="manualPosB">0</span>
+                <button type="button" class="mini-btn" id="incB" title="הוסף צעד">+1</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- אורך המסלול -->
+        <div class="teacher-section">
+          <h3>אורך המסלול עד תחנה 5</h3>
+          <div class="mode-toggle-row">
+            <button type="button" class="mode-btn active" id="modeFullBtn">
+              <strong>מסלול מלא (12 צעדים – מומלץ)</strong>
+              <span>אבני דרך בין 5 התחנות • מתאים לשיעור שלם</span>
+            </button>
+            <button type="button" class="mode-btn" id="modeShortBtn">
+              <strong>מסלול מהיר (5 תחנות – 4 צעדים)</strong>
+              <span>כל צעד מקדם תחנה שלמה • למשחק קצר</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- בחירה ישירה ממאגר 15 השאלות -->
+        <div class="teacher-section">
+          <div class="section-row-between">
+            <h3>מאגר השאלות (בחירה ישירה לפי נושא)</h3>
+            <button type="button" class="small-link-btn" id="resetQuestionsBtn">🔄 אפס שאלות משומשות</button>
+          </div>
+          <div class="question-picker-list" id="questionPickerList"></div>
+        </div>
+
+        <!-- איפוס משחק -->
+        <div class="teacher-footer">
+          <p class="shortcut-hint">קיצורי מקלדת בזמן שאלה: <strong>H</strong> רמז • <strong>A</strong> תשובה • <strong>Esc</strong> ביטול</p>
+          <button type="button" class="danger-btn" id="resetGameBtn">🔄 התחל משחק חדש מהתחלה</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- מסך ניצחון חגיגי + קנבס זיקוקים וקונפטי                                -->
+  <!-- ====================================================================== -->
+  <div class="victory-overlay" id="victoryOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="victoryTitle">
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+    <div class="victory-card">
+      <div class="victory-crown" aria-hidden="true">🏆✨</div>
+      <div class="victory-kicker">הגעתם לתחנה 5 – קריאת שמע והבריחה!</div>
+      <h2 class="victory-title" id="victoryTitle">קבוצה א' ברחה מהיער של הלני!</h2>
+      <p class="victory-quote">"קריאת שמע הצילה את יוסף — והידע שלכם הציל אתכם!"</p>
+
+      <div class="victory-summary" id="victorySummary"></div>
+
+      <div class="victory-actions">
+        <button type="button" class="action-btn btn-correct" id="victoryNewGameBtn">
+          <span>🔄</span>
+          <span>שחקו שוב – משחק חדש</span>
+        </button>
+        <button type="button" class="action-btn btn-skip" id="victoryViewMapBtn">
+          <span>🗺️</span>
+          <span>צפה במפה</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
