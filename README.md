@@ -1,28 +1,28 @@
 # The Peddler and the Mistress — Learning Game
 
-**הבריחה מהיער של הלני** (*Escape from Heleni's Forest*) is an interactive Hebrew (RTL) classroom board game based on S.Y. Agnon's classic short story *"האדונית והרוכל"* (*The Lady and the Peddler*).
+**Escape from Heleni's Forest** is an interactive Hebrew (RTL) classroom board game based on S.Y. Agnon's classic short story *"The Lady and the Peddler"*.
 
-Designed for 11th-grade Special Education students preparing for the Israeli Literature Bagrut exam (כיתה י"א חינוך מיוחד – הכנה לבגרות בספרות), the game is built for full-screen classroom projection with teacher-led facilitation.
+Designed for 11th-grade Special Education students preparing for the Israeli Literature Bagrut exam, the game is built for full-screen classroom projection with teacher-led facilitation.
 
 ---
 
 ## Features
 
 - **Interactive Forest Trail Map (RTL):** An atmospheric night-forest SVG map with 5 key story stations moving right-to-left:
-  1. **הסערה ביער** (*The Storm in the Forest*) – Exposition
-  2. **המחסן וסכין הציידים** (*The Shed & the Hunting Knife*) – Foreshadowing
-  3. **סעודות הבשר והיין** (*Feasts of Meat and Wine*) – Food Motif & Assimilation
-  4. **הרמזים והסכנה** (*The Clues and the Danger*) – Realization & Suspense
-  5. **קריאת שמע והבריחה** (*Shema Prayer & the Escape*) – Climax & Salvation
-- **Two-Team Race:** Two teams (`קבוצה א'` and `קבוצה ב'`) compete along the trail with animated hopping tokens, progress bars, and turn indicators.
+  1. **The Storm in the Forest** – Exposition
+  2. **The Shed & the Hunting Knife** – Foreshadowing
+  3. **Feasts of Meat and Wine** – Food Motif & Assimilation
+  4. **The Clues and the Danger** – Realization & Suspense
+  5. **Shema Prayer & the Escape** – Climax & Salvation
+- **Two-Team Race:** Two teams (Team A and Team B) compete along the trail with animated hopping tokens, progress bars, and turn indicators.
 - **3 Differentiated Difficulty Levels (15 Questions Total):**
-  - 🟢 **בסיס – שליפה מהדף (+1 step):** 5 direct recall questions from the story and summary sheet.
-  - 🟡 **ביניים – הבנה ומוטיבים (+2 steps):** 5 comprehension questions covering motifs, symbols, the root `ח.ז.ר`, irony, and allegory.
-  - 🔴 **אתגר בגרות – ניסוח תשובה (+3 steps):** 5 Bagrut-style questions requiring a textual example plus explanation of meaning/critique.
+  - 🟢 **Basic – Sheet Retrieval (+1 step):** 5 direct recall questions from the story and summary sheet.
+  - 🟡 **Intermediate – Comprehension & Motifs (+2 steps):** 5 comprehension questions covering motifs, symbols, the recurring *return/courtship* root motif, irony, and allegory.
+  - 🔴 **Bagrut Challenge – Answer Formulation (+3 steps):** 5 Bagrut-style questions requiring a textual example plus an explanation of meaning and critique.
 - **Built-in Learning Scaffolds:** Every question card includes a toggleable **Hint** (guiding students where to look on their summary sheet) and a toggleable **Full Teacher Answer**.
-- **Teacher Control Panel (`⚙️ ניהול מורה`):**
+- **Teacher Control Panel:**
   - Rename both teams on the fly.
-  - Manually adjust team positions (`+1` / `−1`).
+  - Manually adjust team positions (`+1` / `-1`).
   - Switch between **Full Track (12 steps with stepping stones)** for a full lesson and **Quick Track (4 steps, 1 per station)** for shorter sessions.
   - Pick any specific question directly by topic or reset the question bank.
   - Start a new game at any time.
@@ -46,12 +46,12 @@ No installation or build tools are required.
 
 ## Keyboard Shortcuts
 
-While a question card is open:
+While a question card is open (the letter shortcuts also work when the keyboard is set to the Hebrew layout):
 
 | Key | Action |
 | --- | --- |
-| `H` (or Hebrew `י`) | Toggle Hint (רמז) |
-| `A` (or Hebrew `ש`) | Toggle Full Teacher Answer (תשובה מלאה למורה) |
+| `H` | Toggle Hint |
+| `A` | Toggle Full Teacher Answer |
 | `Esc` | Close modal and return question to the bank |
 
 ---
